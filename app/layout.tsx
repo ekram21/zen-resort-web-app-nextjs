@@ -1,4 +1,4 @@
-import { auth } from '@/auth';
+import useAuth from '@/hooks/useAuth';
 import Providers from '@/components/layout/providers';
 import { Toaster } from '@/components/ui/sonner';
 import type { Metadata } from 'next';
@@ -22,7 +22,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const user = useAuth();
+  const session = {
+    User: user,
+    user: user || undefined,
+    expires: String(Date.now() + 60 * 60 * 24 * 7 * 60000000)
+  };
   return (
     <html
       lang="en"
